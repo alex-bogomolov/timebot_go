@@ -7,39 +7,69 @@ import (
 	"github.com/nlopes/slack"
 	"regexp"
 	"time"
+	"strings"
+	"fmt"
 )
 
+const batchNewEntryStringRegexp = "^(?:\\s*.* \\d?\\d:\\d\\d .+\\s*)*$"
 const newEntryStringRegexp = "^ *(.*) (\\d?\\d:[0-5]\\d) ([^\\s](?:.|\\s)*[^\\s])$"
 
 func handleNewEntry(message *slack.Msg) {
+	messageText := regexp.MustCompile(batchNewEntryStringRegexp).FindString(message.Text)
+
+	entryStrings := strings.Split(messageText, "\n")
+
+	entriesCreated := 0
+
+	for _, entryString := range entryStrings {
+		entryString := strings.TrimSpace(entryString)
+
+		if matched, err := regexp.MatchString(newEntryStringRegexp, entryString); err == nil && !matched {
+			continue
+		}
+
+		err := createEntry(entryString, message.User)
+
+		if err != nil {
+			handleError(message.User, err)
+			continue
+		}
+
+		entriesCreated++
+	}
+
+	if entriesCreated == 0 {
+		sender.SendMessage(message.User, "No time entries were created.")
+	} else if entriesCreated == 1 {
+		sender.SendMessage(message.User, "One time entry was created.")
+	} else {
+		sender.SendMessage(message.User, fmt.Sprintf("%d time entries were created.", entriesCreated))
+	}
+}
+
+func createEntry(entryString, userId string) error {
 	newEntryRegexp := regexp.MustCompile(newEntryStringRegexp)
-	matches := newEntryRegexp.FindStringSubmatch(message.Text)
+	matches := newEntryRegexp.FindStringSubmatch(entryString)
 
 	projectName := matches[1]
 	entryTime := matches[2]
 	minutes, err := parseTime(entryTime)
 
 	if err != nil {
-		handleError(message.User, err)
-		return
+		return err
 	}
 
 	details := matches[3]
-	user, err := models.FindUser(message.User)
+	user, err := models.FindUser(userId)
 
 	if err != nil {
-		handleError(message.User, err)
-		return
+		return err
 	}
 
 	project, err := models.FindProjectByNameOrAlias(projectName)
 
-	if _, ok := err.(models.NotFoundError); ok {
-		sender.SendMessage(user.UID, "The project with name \""+projectName+"\" was not found.")
-		return
-	} else if err != nil {
-		handleError(user.UID, err)
-		return
+	if err != nil {
+		return err
 	}
 
 	timeEntry := models.TimeEntry{
@@ -56,9 +86,8 @@ func handleNewEntry(message *slack.Msg) {
 	err = timeEntry.Create()
 
 	if err != nil {
-		handleError(message.User, err)
-		return
+		return err
 	}
 
-	sender.SendMessage(user.UID, "The time entry was successfully created.")
+	return nil
 }
