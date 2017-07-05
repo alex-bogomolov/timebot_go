@@ -4,6 +4,8 @@
 
 > To enter time, write `PROJECT_NAME HOURS:MINUTES COMMENT`.
 > For example, `Timebot 8:00 some comment`.
+> You can also create several time entries in one message. To do this, send a multiple line message, where each line
+> will stand for a separate time entry.
 
 > To create an entry for the specific date, write `update DAY.MONTH.YEAR(OPTIONAL) PROJECT_NAME HOURS:MINUTES COMMENT`.
 > For example, `update 25.07 Timebot 8:00 a nice comment`.

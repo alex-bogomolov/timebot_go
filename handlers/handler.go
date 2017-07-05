@@ -12,7 +12,7 @@ import (
 func HandleMessage(message *slack.Msg) {
 	if matched, err := regexp.MatchString(createEntryForDayRegexp, message.Text); matched && err == nil {
 		handleCreateEntryForDay(message)
-	} else if matched, err = regexp.MatchString(newEntryStringRegexp, message.Text); matched && err == nil {
+	} else if matched, err = regexp.MatchString(batchNewEntryStringRegexp, message.Text); matched && err == nil {
 		fmt.Printf("Message \"%s\" is create new entry\n", message.Text)
 		handleNewEntry(message)
 	} else if matched, err = regexp.MatchString(reportRegexpString, message.Text); matched && err == nil {

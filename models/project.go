@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"strings"
 	"time"
+	"fmt"
 )
 
 type Project struct {
@@ -12,6 +13,14 @@ type Project struct {
 	Alias     sql.NullString
 	CreatedAt time.Time
 	UpdatedAt time.Time
+}
+
+type ProjectNotFound struct {
+	Name string
+}
+
+func (p ProjectNotFound) Error() string {
+	return fmt.Sprintf("The project with name \"%s\" was not found.", p.Name)
 }
 
 func FindProjectByNameOrAlias(name string) (*Project, error) {
@@ -35,7 +44,7 @@ func FindProjectByNameOrAlias(name string) (*Project, error) {
 			return nil, err
 		}
 	} else {
-		return nil, NotFoundError{}
+		return nil, ProjectNotFound{Name: name}
 	}
 
 	return &project, nil
