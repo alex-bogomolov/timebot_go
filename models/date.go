@@ -2,9 +2,9 @@ package models
 
 import (
 	"fmt"
-	"time"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 type Date struct {
@@ -15,7 +15,7 @@ type Date struct {
 	Day   int
 }
 
-type InvalidDate struct {}
+type InvalidDate struct{}
 
 func (id InvalidDate) Error() string {
 	return "the date is invalid"
@@ -177,32 +177,31 @@ func EndOfMonth() Date {
 func BeginningOfLastMonth() Date {
 	t := time.Now()
 
-	return NewDate(time.Date(t.Year(), t.Month() - 1, 1, 12, 0, 0, 0, t.Location()))
+	return NewDate(time.Date(t.Year(), t.Month()-1, 1, 12, 0, 0, 0, t.Location()))
 }
 
 func EndOfLastMonth() Date {
 	t := time.Now()
 
-	return NewDate(time.Date(t.Year(), t.Month() - 1, endOfMonth(int(t.Month() - 1), t.Year()), 12, 0, 0, 0, t.Location()))
+	return NewDate(time.Date(t.Year(), t.Month()-1, endOfMonth(int(t.Month()-1), t.Year()), 12, 0, 0, 0, t.Location()))
 }
 
-
 func endOfMonth(month, year int) int {
-	m := map[int]int {
-		1: 31,
-		3: 31,
-		4: 30,
-		5: 31,
-		6: 30,
-		7: 31,
-		8: 31,
-		9: 30,
+	m := map[int]int{
+		1:  31,
+		3:  31,
+		4:  30,
+		5:  31,
+		6:  30,
+		7:  31,
+		8:  31,
+		9:  30,
 		10: 31,
 		11: 30,
 		12: 31,
 	}
 
-	if month == 2 && year % 4 == 0 {
+	if month == 2 && year%4 == 0 {
 		return 29
 	} else if month == 2 {
 		return 28
@@ -221,7 +220,6 @@ func ParseDate(s string) (*Date, error) {
 
 	day, err = strconv.ParseInt(matchData[1], 10, 64)
 	month, err = strconv.ParseInt(matchData[2], 10, 64)
-
 
 	if matchData[3] == "" {
 		year = int64(time.Now().Year())

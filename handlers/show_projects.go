@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/alex-bogomolov/timebot_go/models"
 	"fmt"
+	"github.com/alex-bogomolov/timebot_go/models"
 	"github.com/alex-bogomolov/timebot_go/sender"
 )
 
@@ -25,7 +25,6 @@ func handleShowProjects(uid string) {
 
 	sender.SendMessage(uid, fmt.Sprintf("```%s```", stringArray.Join("\n")))
 }
-
 
 func rightPad(s string, length int) string {
 	out := s

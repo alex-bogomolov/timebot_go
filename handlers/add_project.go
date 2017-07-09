@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"regexp"
+	"fmt"
 	"github.com/alex-bogomolov/timebot_go/models"
 	"github.com/alex-bogomolov/timebot_go/sender"
-	"fmt"
+	"regexp"
 )
 
 const addProjectRegexp = "^ *add project (\\w.*?) *$"

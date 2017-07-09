@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	"regexp"
-	"strconv"
+	"fmt"
 	"github.com/alex-bogomolov/timebot_go/models"
 	"github.com/alex-bogomolov/timebot_go/sender"
-	"fmt"
+	"regexp"
+	"strconv"
 )
 
 const removeEntryRegexp = "^ *remove entry (\\d+) *$"

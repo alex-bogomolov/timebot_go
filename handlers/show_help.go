@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"os"
-	"io/ioutil"
 	"fmt"
 	"github.com/alex-bogomolov/timebot_go/sender"
+	"io/ioutil"
+	"os"
 )
 
 const showHelpRegexp = "^ *help *$"

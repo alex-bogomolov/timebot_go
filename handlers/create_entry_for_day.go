@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	"github.com/nlopes/slack"
-	"regexp"
+	"database/sql"
 	"github.com/alex-bogomolov/timebot_go/models"
 	"github.com/alex-bogomolov/timebot_go/sender"
-	"database/sql"
+	"github.com/nlopes/slack"
+	"regexp"
 	"time"
 )
 

@@ -122,7 +122,7 @@ func FindTimeEntryByID(id int) (*TimeEntry, error) {
 		}
 
 		timeEntry.Date = NewDate(d)
-		return &timeEntry, nil;
+		return &timeEntry, nil
 	} else {
 		return nil, NotFoundError{}
 	}

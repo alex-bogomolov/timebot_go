@@ -24,7 +24,7 @@ func (s StringArray) Join(delimiter string) string {
 	out := ""
 	for i, v := range s.array {
 		out += v
-		if i != len(s.array) - 1 {
+		if i != len(s.array)-1 {
 			out += delimiter
 		}
 	}

@@ -44,7 +44,7 @@ func FindProjectByNameOrAlias(name string) (*Project, error) {
 func GetAllProjects() ([]*Project, error) {
 	selectPart := "id, name, alias, created_at, updated_at"
 
-	rows, err := DB.Query("SELECT "+selectPart+" FROM projects ORDER BY name")
+	rows, err := DB.Query("SELECT " + selectPart + " FROM projects ORDER BY name")
 
 	if err != nil {
 		return nil, err
